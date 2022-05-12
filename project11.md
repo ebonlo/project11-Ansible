@@ -20,3 +20,59 @@ Within the inventory folder, create an inventory file (.yml) for each environmen
 
 2. Set up an Ansible Inventory
 > Update your inventory/dev.yml file with this snippet of code
+```
+[nfs]
+<NFS-Server-Private-IP-Address> ansible_ssh_user='ec2-user'
+
+[webservers]
+<Web-Server1-Private-IP-Address> ansible_ssh_user='ec2-user'
+<Web-Server2-Private-IP-Address> ansible_ssh_user='ec2-user'
+
+[db]
+<Database-Private-IP-Address> ansible_ssh_user='ec2-user' 
+
+[lb]
+<Load-Balancer-Private-IP-Address> ansible_ssh_user='ubuntu'
+```
+3. Create a Common Playbook
+> Update your playbooks/common.yml file with following code
+```
+---
+- name: update web, nfs and db servers
+  hosts: webservers, nfs, db
+  remote_user: ec2-user
+  become: yes
+  become_user: root
+  tasks:
+    - name: ensure wireshark is at the latest version
+      yum:
+        name: wireshark
+        state: latest
+
+- name: update LB server
+  hosts: lb
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  tasks:
+    - name: Update apt repo
+      apt: 
+        update_cache: yes
+
+    - name: ensure wireshark is at the latest version
+      apt:
+        name: wireshark
+        state: latest
+```
+> Commit your new branch to Github and create a pull request into master branch. 
+
+4. Run first Ansible test
+```
+ansible-playbook -i inventory/dev.yml playbooks/common.yml
+```
+> You can go to each of the servers and check if wireshark has been installed by running which wireshark or git
+> You should have the following result:
+
+
+
+
