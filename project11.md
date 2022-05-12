@@ -20,3 +20,4 @@ Within the inventory folder, create an inventory file (.yml) for each environmen
 
 2. Set up an Ansible Inventory
 > Update your inventory/dev.yml file with this snippet of code
+![]
