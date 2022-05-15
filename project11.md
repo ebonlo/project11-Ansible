@@ -72,6 +72,7 @@ ansible-playbook -i inventory/dev.yml playbooks/common.yml
 ```
 > You can go to each of the servers and check if wireshark has been installed by running which wireshark or git
 > You should have the following result:
+> This project was sucessful.
 
 
 
